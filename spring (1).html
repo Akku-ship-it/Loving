@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Valentine Test Ultimate 💖</title>
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#ffd1dc,#ffc0cb);
+overflow:hidden;
+animation:bgPulse 6s infinite;
+/* Fix for screen jumping/scrolling */
+position: fixed;
+width: 100%;
+height: 100%;
+}
+
+@keyframes bgPulse{
+0%{filter:brightness(1)}
+50%{filter:brightness(1.15)}
+100%{filter:brightness(1)}
+}
+
+.center{
+height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.mainTitle{
+color:#d81b60;
+font-size:32px;
+font-weight:bold;
+margin-bottom: 20px;
+}
+
+.challengeBox {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    border-radius: 15px;
+    border: 1px solid #ff4081;
+    color:#ad1457;
+    max-width:320px;
+    margin-bottom: 25px;
+    font-size:16px;
+}
+
+button{
+padding:14px 28px;
+border:none;
+border-radius:40px;
+font-size:18px;
+cursor:pointer;
+transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* Makes mobile clicking smoother */
+touch-action: manipulation;
+}
+
+button:active { transform: scale(0.9); }
+
+#yesBtn{
+background:#ff4081;
+color:white;
+box-shadow:0 0 15px rgba(255,64,129,.5);
+margin-bottom: 15px;
+}
+
+#noBtn{ background:#999; color:white; }
+
+.success{
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+height:100vh;
+text-align:center;
+}
+
+#loveGif{ width:180px; margin:15px 0; border-radius: 20px; }
+
+#secretMsg{ 
+    display:none; 
+    margin-top:30px; 
+    max-width:320px; 
+    color:purple; 
+    border:2px solid purple; 
+    padding:15px; 
+    border-radius:15px;
+}
+
+.reasonRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:15px; }
+
+.reasonBtn{
+background:#ff6fa5;
+color:white;
+border-radius:20px;
+padding:8px 14px;
+margin: 4px;
+}
+
+#reasonText{ margin-top:15px; color:#c2185b; font-size:19px; font-weight: 600; }
+
+.heart{
+position:fixed;
+font-size:22px;
+opacity:.3;
+animation:floatUp 8s linear infinite;
+z-index: -1;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh)}
+100%{transform:translateY(-10vh)}
+}
+
+.fullPage{
+position:fixed;
+top:0;
+left:0;
+width:100vw;
+height:100vh;
+display:none;
+z-index:99;
+background:linear-gradient(135deg,#ffd1dc,#ffc0cb);
+justify-content:center;
+align-items:center;
+}
+
+.slide{
+position:absolute;
+max-width: 90%;
+max-height: 85%;
+object-fit: contain;
+opacity:0;
+transition:1s;
+border-radius: 15px;
+}
+.slide.show{opacity:1;}
+
+#thankYouPage {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100vh;
+    background: linear-gradient(135deg,#ffd1dc,#ffc0cb);
+}
+.thankYouText {
+    color: #6a1b9a; 
+    font-size: 26px;
+    font-weight: bold;
+    line-height: 1.4;
+}
+.malkinText {
+    display: block;
+    font-size: 42px;
+    margin-top: 15px;
+}
+
+.doorWrap{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+z-index:120;
+}
+.door{ position:absolute; top:0; width:50%; height:100%; background:#ff9ecb; transition:1s; }
+.leftDoor{ left:0; }
+.rightDoor{ right:0; }
+.doorOpen .leftDoor{ transform:translateX(-100%); }
+.doorOpen .rightDoor{ transform:translateX(100%); }
+
+.remainingBox{
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(255,255,255,0.9);
+padding:12px 25px;
+border-radius:30px;
+text-align:center;
+z-index:150;
+box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+.remainingBox button {
+    background: #ff4081;
+    color: white;
+    font-size: 15px;
+    padding: 8px 20px;
+}
+
+.trail {
+    position: fixed;
+    pointer-events: none;
+    font-size: 18px;
+    z-index: 9999;
+    animation: trailAnim 1s ease-out forwards;
+}
+@keyframes trailAnim {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0); opacity: 0; transform: translateY(-40px); }
+}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="love-song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="center" id="mainPage">
+    <h1 class="mainTitle">Will you be my valentine?🌷🩷</h1>
+    <div class="challengeBox">
+        I challenge you to tap on No. But be warned.. Im very good at giving you reasons to say yes 🎀🙂‍↕️
+    </div>
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 💔</button>
+</div>
+
+<div class="success" id="successPage">
+    <h1 style="color:#d81b60">Yay! You just made me the happiest person 💕</h1>
+    <img id="loveGif" src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUybWtjZGVucm1nenVyMWR1OTltYWRqZmgxb2p1bGU3N25ncTB5cmExbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qFmdpUKAFZ6rMobzzu/giphy.gif">
+    <h2 style="color:#d81b60">🎀 Happy Valentine’s Day ❤️ 🌷</h2>
+    <button id="secretBtn" onclick="showSecret(event)">Tap For Secret Message 💌</button>
+    <div id="secretMsg"></div>
+</div>
+
+<div id="photoPage" class="fullPage">
+    <img class="slide" src="img1.jpg">
+    <img class="slide" src="img2.jpg">
+    <img class="slide" src="img3.jpg">
+</div>
+
+<div id="videoPage" class="fullPage">
+    <video id="vid" src="VID_20260209_193406_163.mp4" style="width:100%;height:100%;object-fit:contain" muted playsinline preload="auto"></video>
+</div>
+
+<div id="thankYouPage">
+    <div class="thankYouText">
+        Thank you for your time
+        <span class="cutieText">Cutie🎀🌷</span>
+    </div>
+    <div style="font-size: 50px; margin-top: 25px;">🌸💜🌸</div>
+</div>
+
+<div id="doorAnim" class="doorWrap">
+<div class="door leftDoor"></div>
+<div class="door rightDoor"></div>
+</div>
+
+<script>
+let photosSeen = false;
+let videoSeen = false;
+let slideInterval; 
+
+const music = document.getElementById("bgMusic");
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const mainPage=document.getElementById("mainPage");
+const successPage=document.getElementById("successPage");
+const videoEl = document.getElementById("vid");
+
+document.addEventListener('mousemove', (e) => createTrail(e.pageX, e.pageY));
+document.addEventListener('touchstart', (e) => createTrail(e.touches[0].pageX, e.touches[0].pageY));
+
+function createTrail(x, y) {
+    if(Math.random() > 0.3) return;
+    const trail = document.createElement('div');
+    trail.className = 'trail';
+    trail.innerHTML = ['💖','🌸','🌷'][Math.floor(Math.random()*3)];
+    trail.style.left = x + 'px';
+    trail.style.top = y + "px";
+    document.body.appendChild(trail);
+    setTimeout(() => trail.remove(), 1000);
+}
+
+function blast(e) {
+    const x = e.clientX || window.innerWidth/2;
+    const y = e.clientY || window.innerHeight/2;
+    const items = ["💖", "🌸", "🌷", "✨"];
+    for(let i=0; i<15; i++){
+        let h = document.createElement("div");
+        h.innerText = items[Math.floor(Math.random()*items.length)];
+        h.style.position = "fixed"; h.style.left = x + "px"; h.style.top = y + "px";
+        h.style.fontSize = "20px"; h.style.pointerEvents = "none";
+        h.style.transition = "1.5s ease-out"; h.style.zIndex = "1000";
+        document.body.appendChild(h);
+        setTimeout(() => {
+            h.style.transform = `translate(${Math.random()*400-200}px, ${Math.random()*400-200}px) rotate(${Math.random()*360}deg)`;
+            h.style.opacity = "0";
+        }, 50);
+        setTimeout(() => h.remove(), 1500);
+    }
+}
+
+yesBtn.onclick=(e)=>{
+    blast(e);
+    music.play().catch(() => {});
+    setTimeout(()=>{
+        mainPage.style.display="none";
+        successPage.style.display="flex";
+        startFlyingThings();
+    },600);
+};
+
+function moveNo(){
+    const w=window.innerWidth-120;
+    const h=window.innerHeight-60;
+    noBtn.style.position="fixed";
+    noBtn.style.left=Math.random()*w+"px";
+    noBtn.style.top=Math.random()*h+"px";
+}
+noBtn.addEventListener("mouseenter",moveNo);
+noBtn.addEventListener("touchstart",e=>{e.preventDefault();moveNo();});
+
+function showSecret(e){
+    blast(e);
+    e.target.style.display="none";
+    const box=document.getElementById("secretMsg");
+    box.style.display="block";
+    box.innerText="aapko pata hai aap smile karti ho dil ko khushi milti smile please hehe📸";
+    setTimeout(()=>{
+        box.innerHTML="Why I Love You 💜";
+        showReasons(box);
+    },4000);
+}
+
+let reasonCount=0;
+function showReasons(box){
+    const row=document.createElement("div");
+    row.className="reasonRow";
+    const reasons=["Your smile makes my day ❤️", "You understand me without words ❤️", "Life feels beautiful with you ❤️"];
+    reasons.forEach((text,i)=>{
+        let btn=document.createElement("button");
+        btn.className="reasonBtn"; btn.innerText="Reason "+(i+1);
+        btn.onclick=(e)=>{
+            blast(e);
+            showReasonText(text,box,row);
+        };
+        row.appendChild(btn);
+    });
+    box.appendChild(row);
+}
+
+function showReasonText(text,box,row){
+    let old=document.getElementById("reasonText");
+    if(old) old.remove();
+    let div=document.createElement("div");
+    div.id="reasonText"; div.innerText=text;
+    box.appendChild(div);
+    reasonCount++;
+    if(reasonCount>=3){
+        setTimeout(() => { row.remove(); showQuestions(box); }, 1000);
+    }
+}
+
+function showQuestions(box){
+    box.innerHTML=`
+        <div style="color:purple">
+            <p>What I want to do with you ?</p>
+            <button onclick="blast(event); openPhotos()" style="background:#ff4081; color:white;">See Here 💕</button>
+            <p style="margin-top:15px">What will I do with you ?</p>
+            <button onclick="blast(event); openVideo()" style="background:#ff4081; color:white;">See Here 💖</button>
+        </div>
+    `;
+}
+
+function openDoorThen(cb){
+    const door=document.getElementById("doorAnim");
+    door.style.display="block";
+    setTimeout(()=>door.classList.add("doorOpen"),50);
+    setTimeout(()=>{
+        door.style.display="none";
+        door.classList.remove("doorOpen");
+        cb();
+    },1100);
+}
+
+function openPhotos(){
+    photosSeen = true;
+    openDoorThen(()=>{
+        document.getElementById("videoPage").style.display="none"; 
+        videoEl.pause(); 
+        document.getElementById("photoPage").style.display="flex";
+        startSlideShow(); 
+        updateRemainingBox("photo");
+    });
+}
+
+function openVideo(){
+    videoSeen = true;
+    openDoorThen(()=>{
+        document.getElementById("photoPage").style.display="none";
+        clearTimeout(slideInterval); 
+        document.getElementById("videoPage").style.display="flex";
+        videoEl.currentTime = 0; 
+        videoEl.play();
+        updateRemainingBox("video");
+    });
+}
+
+videoEl.onended = () => {
+    if(photosSeen) goToFinal();
+    else updateRemainingBox("video");
+};
+
+function goToFinal(){
+    document.querySelectorAll(".fullPage").forEach(p => p.style.display="none");
+    document.getElementById("successPage").style.display="none";
+    document.getElementById("thankYouPage").style.display="flex";
+    videoEl.pause();
+}
+
+function updateRemainingBox(pageType){
+    const old = document.querySelectorAll(".remainingBox");
+    old.forEach(el => el.remove());
+    if(photosSeen && videoSeen) return;
+    let box = document.createElement("div");
+    box.className="remainingBox";
+    if(pageType === "photo" && !videoSeen) {
+        box.innerHTML = `<div style="color:#d81b60">Next: What will I do with you ?</div><button onclick="blast(event); openVideo()">See Here 💖</button>`;
+        document.getElementById("photoPage").appendChild(box);
+    } else if (pageType === "video" && !photosSeen) {
+        box.innerHTML = `<div style="color:#d81b60">Next: What I want to do with you ?</div><button onclick="blast(event); openPhotos()">See Here 💕</button>`;
+        document.getElementById("videoPage").appendChild(box);
+    }
+}
+
+function startSlideShow(){
+    clearTimeout(slideInterval); 
+    let slides=document.querySelectorAll(".slide");
+    slides.forEach(s=>s.classList.remove("show")); 
+    
+    let i=0;
+    function show(){
+        if(document.getElementById("photoPage").style.display === "none") return;
+        
+        slides.forEach(s=>s.classList.remove("show"));
+        slides[i].classList.add("show");
+        i++;
+        
+        if(i >= slides.length) {
+            if(videoSeen) slideInterval = setTimeout(goToFinal, 2500);
+            else updateRemainingBox("photo");
+            return;
+        }
+        slideInterval = setTimeout(show, 3000);
+    }
+    show();
+}
+
+function startFlyingThings(){
+    setInterval(()=>{
+        let el=document.createElement("div");
+        el.innerHTML=["🌸","💖","🌷"][Math.floor(Math.random()*3)];
+        el.style.position="fixed"; el.style.left=Math.random()*100+"vw";
+        el.style.top="100vh"; el.style.fontSize="22px";
+        el.style.transition="4s linear"; document.body.appendChild(el);
+        setTimeout(()=>{el.style.top="-50px";el.style.opacity="0";},50);
+        setTimeout(()=>el.remove(),4000);
+    },400);
+}
+
+for(let i=0;i<15;i++){
+    let h=document.createElement("div");
+    h.className="heart"; h.innerText="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(6+Math.random()*6)+"s";
+    document.body.appendChild(h);
+}
+</script>
+</body>
+</html>
